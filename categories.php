@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="CSS/style.css">
-    <title>Document</title>
+    <title>Categories</title>
     <script src="https://kit.fontawesome.com/2c1c0f2ad6.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -61,18 +61,77 @@
     <div style="height: 1.5px; background: lightslategray;"></div>
 
     <!--HEADER-->
-        <header class="bg-light text-dark py-3">
+        <header class="bg-dark text-light py-3">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1><i class="fas fa-text-height"></i>My name is Ashton. I work at Google</h1>
+                        <h1><i class="fas fa-edit"></i>Manage Categories</h1>
                     </div>
                 </div>
             </div>
 
         </header>
     <!--HEADER END-->
-    <br>
+    
+
+    <!--MAIN AREA-->
+
+
+    <section class="container py-2 mb-4">
+
+        <div class="row">
+
+            <div class="offset-lg-1 col-lg-10">
+
+                <form action="categories.php" method="post">
+                        <div class="card bg-secondary text-light mb-3">
+                            <div class="card-header">
+                                <h1>Add New Category</h1>
+                            </div>
+
+                                <div class="card-body bg-dark">
+                                    <div class="form-group">
+                                        <label for="title"><span class="fieldInfo">Category Title:</span></label>
+                                        <input class="form-control" type="text" name="Titke" id="title" placeholder="Type title here">
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-lg-6 mb-2">
+                                            <a href="dashboard.php" class="btn btn-warning btn-block"><i class="fas fa-arrow-left"></i>Back To Dashboard</a>
+                                        </div>
+
+                                        <div class="col-lg-6 mb-2">
+                                            <button type="button" name="Submit" class="btn btn-success btn-block">
+                                            <i class="fas fa-check"></i>Publish
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+
+                        </div>
+
+                </form>
+
+
+            </div>
+
+         </div>
+
+    </section>
+
+
+
+
+
+<!--MAIN AREA END-->
+
+
+
 
     <!--FOOTER-->    
     <footer class="bg-light text-dark">
