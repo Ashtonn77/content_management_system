@@ -4,11 +4,45 @@
 <?php
 if(isset($_POST['submit'])){
     $categoryTitle = $_POST['categoryTitle'];
+    $admin = 'Ashton';
+    $currentTime = time();
+    $dateTime = strftime("%Y-%m-%d %H:%M:%S", $currentTime);
+    
+    global $connectingDb;
+
     if(empty($categoryTitle)){
         $_SESSION['errorMessage'] = "All fields must be filled";
         redirectTo('categories.php');
     }
+    elseif(strlen($categoryTitle) < 3){
+        $_SESSION['errorMessage'] = "Category title should be more than 2 characters long";
+        redirectTo('categories.php');
+    }
+    elseif(strlen($categoryTitle) > 49){
+        $_SESSION['errorMessage'] = "Category title should be less than 50 characters";
+        redirectTo('categories.php');
+    }
+    else{
+        //query to insert category in db
+        $sql = "INSERT INTO category(title,author,datetime)";
+        $sql .= "VALUES(:Title,:Author,:DateTime)";
 
+        $stmt = $connectingDb->prepare($sql);
+        $stmt->bindValue(':Title', $categoryTitle);
+        $stmt->bindValue(':Author', $admin);
+        $stmt->bindValue(':DateTime', $dateTime);
+        $execute = $stmt->execute();
+
+        if($execute){
+            $_SESSION['successMessage'] = "Category with id : ".$connectingDb->lastInsertId()." added successfully :)";
+            redirectTo('categories.php');
+        }
+        else{
+            $_SESSION['errorMessage'] = "Something went wrong :( Try again ! ";
+            redirectTo('categories.php');
+        }
+
+    }//end if category
 
 }//end if isset
 
@@ -116,11 +150,11 @@ if(isset($_POST['submit'])){
 
                                     <div class="row">
 
-                                        <div class="col-lg-6 mb-2">
-                                            <a href="dashboard.php" class="btn btn-warning btn-block"><i class="fas fa-angle-double-left"></i> Dashboard</a>
+                                        <div class="offset-lg-8 col-lg-2 mb-2">
+                                            <a href="dashboard.php" class="btn btn-warning btn-block px-2"><i class="fas fa-angle-double-left"></i> Dashboard</a>
                                         </div>
 
-                                        <div class="col-lg-6 mb-2">
+                                        <div class="col-lg-2 mb-2">
                                             <button type="submit" name="submit" class="btn btn-success btn-block">
                                             <i class="fas fa-check"></i> Publish
                                             </button>
