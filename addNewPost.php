@@ -157,10 +157,10 @@ if(isset($_POST['submit'])){
                                     <div class="form-group">
                                         <label for="categoryTitle"><span class="fieldInfo">Choose category:</span></label>
                                             <select class="form-control" name="category" id="categoryTitle">
-                                          
+                                            <option></option>
                                                     <?php
                                                         global $connectingDb;
-                                                        $sql = "SELECT id, title FROM category";
+                                                        $sql = "SELECT id,title FROM category";
                                                         $stmt = $connectingDb->query($sql);
                                                         while($dataRows = $stmt->fetch()){
                                                             $id = $dataRows['id'];

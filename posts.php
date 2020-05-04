@@ -82,7 +82,7 @@
                 </div>
 
                 <div class="col-lg-3 mb-2">
-                    <a href="categories.php" class="btn btn-dark btn-block">
+                    <a href="categories.php" class="btn btn-secondary btn-block">
                         <i class="fas fa-folder-plus"> Add New Category</i>
                     </a>
                 </div>
@@ -113,22 +113,26 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <table>
+                <table class="table table-striped table-hover">
 
-                    <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Category</th>
-                        <th>Date & Time</th>
-                        <th>Author</th>
-                        <th>Banner</th>
-                        <th>Comments</th>
-                        <th>Action</th>
-                        <th>Live Preview</th>
-                    </tr>
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Date & Time</th>
+                            <th>Author</th>
+                            <th>Banner</th>
+                            <th>Comments</th>
+                            <th>Action</th>
+                            <th>Live Preview</th>
+                        </tr>
+                    </thead>
+
 
                     <?php
                     global $connectingDb;
+                    $num = 0;
                     $sql = "SELECT * FROM posts";
                     $stmt = $connectingDb->query($sql);
 
@@ -140,24 +144,53 @@
                         $author     = $dataRows['author'];
                         $image      = $dataRows['image'];
                         $post       = $dataRows['post'];
-                    
+                        $num++;
                     ?>
 
-                    <tr>
-                        <td>#</td>
-                        <td><?=$title?></td>
-                        <td><?=$category?></td>
-                        <td><?=$dateTime?></td>
-                        <td><?=$author?></td>
-                        <td><?=$image?></td>
-                        <th>Comments</td>
-                        <th>Action</td>
-                        <td>Live Preview</td>
-                    </tr>
+                        <tbody>
+                            <tr>
+                                <td class="table-secondary"><?=$num; ?></td>
+                                <td data-toggle="tooltip" title="<?=$title?>">
+                                <?php
+                                if(strlen($title) > 20){
+                                    $title = substr($title,0,18).'...';
+                                }
+                                ?>    
+                                <?=$title?></td>
+                                <td data-toggle="tooltip" title="<?=$category?>">
+                                <?php    
+                                if(strlen($category) > 8){
+                                    $category = substr($category,0,8).'..';
+                                }
+                                ?>     
+                                <?=$category?></td>
+                                <td data-toggle="tooltip" title="<?=$dateTime?>">
+                                <?php    
+                                if(strlen($dateTime) > 11){
+                                    $dateTime = substr($dateTime,0,11).'..';
+                                }
+                                ?>     
+                                <?=$dateTime?></td>
+                                <td data-toggle="tooltip" title="<?=$author?>">
+                                <?php    
+                                if(strlen($author) > 6){
+                                    $author = substr($author,0,6).'..';
+                                }
+                                ?>     
+                                <?=$author?></td>
+                                <td><img src="uploads/<?=$image;?>" width="100px"></td>
+                                <td>Comments</td>
+                                <td>
+                                   <a href=""><span class="btn btn-warning btn-sm">Edit</span></a> 
+                                   <a href=""><span class="btn btn-danger btn-sm">Delete</span></a>
+                                </td>
+                                <td><a href=""><span class="btn btn-primary btn-sm">Live Preview</span></a></td>
+                            </tr>
+                        </tbody>
 
                     <?php }; ?>
                 </table>
-
+                                
             </div>
         </div>
 
