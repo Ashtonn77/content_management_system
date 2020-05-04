@@ -5,15 +5,13 @@
 if(isset($_POST['submit'])){
     $postTitle = $_POST['postTitle'];
     $category = $_POST['category'];
-    $image = $_FILES["image"]["name"];
-
-    $target = "uploads/".basename($_FILES["image"]["name"]);
+    $image = $_FILES['image']['name'];
+    $target = 'uploads/'.basename($_FILES['image']['name']);
     $postText = $_POST['postDescription'];
     $admin = 'Ashton';
     $currentTime = time();
-    $dateTime = strftime("%Y-%m-%d %H:%M:%S", $currentTime);
+    $dateTime = strftime("%Y-%m-%d %H:%M:%S", $currentTime);    
     
-    global $connectingDb;
 
     if(empty($postTitle)){
         $_SESSION['errorMessage'] = "Post title can't be empty";
@@ -28,6 +26,7 @@ if(isset($_POST['submit'])){
         redirectTo('addNewPost.php');
     }
     else{
+        global $connectingDb;
         //query to insert post in db
         $sql = "INSERT INTO posts(datetime,title,category,author,image,post)";
         $sql .= "VALUES(:DateTime,:Title,:Category,:Author,:Image,:Post)";
@@ -42,8 +41,7 @@ if(isset($_POST['submit'])){
         
         $execute = $stmt->execute();
         move_uploaded_file($_FILES['image']['tmp_name'],$target);
-        //move_uploaded_file($_FILES["image"]["tmp_name"],'uploads/'.$new_file_name); //saves image to uploads directory
-
+        
         if($execute){
             $_SESSION['successMessage'] = "Post with id : ".$connectingDb->lastInsertId()." added successfully :)";
             redirectTo('addNewPost.php');
@@ -168,8 +166,8 @@ if(isset($_POST['submit'])){
                                                             $id = $dataRows['id'];
                                                             $categoryName = $dataRows['title'];
                                                     ?>
-                                                             <option value=""><?=$categoryName;?></option>
-                                                        <?php } ?>     
+                                                             <option><?=$categoryName;?></option>
+                                                        <?php }; ?>     
                                             </select>
                                     </div>
 
