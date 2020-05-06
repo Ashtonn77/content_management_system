@@ -1,6 +1,7 @@
 <?php require_once("Includes/db.php");?>
 <?php require_once("Includes/functions.php");?>
 <?php require_once("Includes/session.php");?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +15,7 @@
 <body>
     <div style="height: 1.5px; background: lightslategray;"></div>
     <!--NAVBAR START-->
-    <nav class="navbar navbar-expand navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a href="#" class="navbar-brand"><div style="font-size: 0.5rem;"><i class="fab fa-centos fa-5x text-secondary"></i></div></a>
 
@@ -64,7 +65,7 @@
 
     <!--HEADER-->
         
-        <div class="container">
+    <div class="container">
             <div class="row mt-4">
 
             <!--MAIN AREA-->
@@ -73,6 +74,42 @@
                 <h1>My very first Blogging Site</h1>
                 <h1 class="lead">An Ashton Naidoo Project</h1>    
 
+                    <?php
+                        global $connectingDb;
+                        $sql = "SELECT * FROM posts ORDER BY id desc";
+                        $stmt = $connectingDb->query($sql);
+
+                        while($dataRows = $stmt->fetch()){
+                            $id             = $dataRows['id'];
+                            $dateTime       = $dataRows['datetime'];
+                            $title          = $dataRows['title'];
+                            $category       = $dataRows['category'];
+                            $author         = $dataRows['author'];
+                            $image          = $dataRows['image'];
+                            $post           = $dataRows['post'];                        
+                    ?>
+
+                    <div class="card">
+                    <img src="uploads/<?= htmlentities($image)?>" alt="postImage" style="max-height:450px;" class="img-fluid card-img-top">
+                        <div class="card-body">
+                            <h4 class="card-title"><?=htmlentities($title);?></h4>                            
+                            <small class="text-muted">Written by <?=htmlentities($author);?> on <?=htmlentities($dateTime);?></small>
+                            <span style="float:right;" class="badge">Comments 5</span>
+                            <hr>
+                            <p class="card-text">
+                            <?php
+                            if(strlen($post) > 150){
+                                $post = substr($post, 0, 150).'...';
+                            }
+                            ?>    
+                            <?=htmlentities($post)?></p>
+                            <a href="fullPost.php" style="float: right">
+                                <span class="btn btn-info btn-sm">Read more <i class="fas fa-angle-double-right"></i>
+                            </span></a>
+
+                        </div>
+                    </div>
+                        <?php };?>             
                 </div>
                 <!--MAIN AREA END-->
                 
@@ -82,7 +119,7 @@
                 <div class="col-4" style="min-height: 40px; background:red">
 
                 </div>
-                <!--SIDE AREA-->
+                <!--SIDE AREA END-->
 
             </div>
         </div>
