@@ -72,11 +72,7 @@
                 <div class="col-8">
 
                 <h1>My very first Blogging Site</h1>
-                <h1 class="lead">An Ashton Naidoo Project</h1>    
-                <?php
-                echo errorMessage();
-                echo successMessage();
-                ?>
+                <h1 class="lead">An Ashton Naidoo Project</h1>                   
                     <?php
                         global $connectingDb;
 
@@ -94,7 +90,13 @@
                         }
                         else{
                             // default sql
-                            $sql = "SELECT * FROM posts ORDER BY id desc";
+                            $idFromURL = $_GET['id'];
+                             if(!isset($idFromURL)){
+                                 $_SESSION['errorMessage'] = 'Bad Request :(';
+                                 redirectTo('blog.php');
+                             }   
+
+                            $sql = "SELECT * FROM posts WHERE id = '$idFromURL'";
                             $stmt = $connectingDb->query($sql);
                         }                
                         
@@ -115,17 +117,8 @@
                             <small class="text-muted">Written by <?=htmlentities($author);?> on <?=htmlentities($dateTime);?></small>
                             <span style="float:right;" class="badge">Comments 5</span>
                             <hr>
-                            <p class="card-text">
-                            <?php
-                            if(strlen($post) > 150){
-                                $post = substr($post, 0, 150).'...';
-                            }
-                            ?>    
-                            <?=htmlentities($post)?></p>
-                            <a href="fullPost.php?id=<?=$id;?>" style="float: right">
-                                <span class="btn btn-info btn-sm">Read more <i class="fas fa-angle-double-right"></i>
-                            </span></a>
-
+                            <p class="card-text"> <?=htmlentities($post)?></p>
+                           
                         </div>
                     </div>
                         <?php };?>             
