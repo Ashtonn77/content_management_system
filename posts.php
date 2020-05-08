@@ -181,10 +181,10 @@
                                 <td><img src="uploads/<?=$image;?>" width="100px"></td>
                                 <td>Comments</td>
                                 <td>
-                                   <a href=""><span class="btn btn-warning btn-sm">Edit</span></a> 
-                                   <a href=""><span class="btn btn-danger btn-sm">Delete</span></a>
+                                   <a href="editPost.php?id=<?=$id;?>"><span class="btn btn-warning btn-sm">Edit</span></a> 
+                                   <a href="deletePost.php?id=<?=$id;?>"><span class="btn btn-danger btn-sm">Delete</span></a>
                                 </td>
-                                <td><a href=""><span class="btn btn-primary btn-sm">Live Preview</span></a></td>
+                                <td><a href="fullPost.php?id=<?=$id;?>"><span class="btn btn-primary btn-sm">Live Preview</span></a></td>
                             </tr>
                         </tbody>
 
