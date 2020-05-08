@@ -21,7 +21,7 @@ if(isset($_POST['submit'])){
         $_SESSION['errorMessage'] = "Post title should be more than 5 characters long";
         redirectTo('addNewPost.php');
     }
-    elseif(strlen($postText) > 999){
+    elseif(strlen($postText) > 9999){
         $_SESSION['errorMessage'] = "Post should be less than 1000 characters";
         redirectTo('addNewPost.php');
     }
@@ -186,11 +186,11 @@ if(isset($_POST['submit'])){
                                     <div class="row">
 
                                         <div class="offset-lg-8 col-lg-2 mb-2">
-                                            <a href="dashboard.php" class="btn btn-warning btn-block px-2"><i class="fas fa-angle-double-left"></i> Dashboard</a>
+                                            <a href="dashboard.php" class="btn btn-warning btn-block px-2 btn-sm"><i class="fas fa-angle-double-left"></i> Dashboard</a>
                                         </div>
 
                                         <div class="col-lg-2 mb-2">
-                                            <button type="submit" name="submit" class="btn btn-success btn-block">
+                                            <button type="submit" name="submit" class="btn btn-success btn-block btn-sm">
                                             <i class="fas fa-check"></i> Publish
                                             </button>
                                         </div>

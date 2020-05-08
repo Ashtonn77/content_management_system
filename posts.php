@@ -112,7 +112,10 @@
 
         <div class="row">
             <div class="col-lg-12">
-
+            <?php
+                echo errorMessage();
+                echo successMessage();
+                ?>
                 <table class="table table-striped table-hover">
 
                     <thead class="thead-dark">

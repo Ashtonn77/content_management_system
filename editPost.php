@@ -2,6 +2,7 @@
 <?php require_once("Includes/functions.php");?>
 <?php require_once("Includes/session.php");?>
 <?php
+$searchQueryParameter = $_GET['id'];
 if(isset($_POST['submit'])){
     $postTitle = $_POST['postTitle'];
     $category = $_POST['category'];
@@ -15,40 +16,40 @@ if(isset($_POST['submit'])){
 
     if(empty($postTitle)){
         $_SESSION['errorMessage'] = "Post title can't be empty";
-        redirectTo('addNewPost.php');
+        redirectTo('editPost.php?id=<?=$searchQueryParameter;?>');
     }
     elseif(strlen($postTitle) < 5){
         $_SESSION['errorMessage'] = "Post title should be more than 5 characters long";
-        redirectTo('addNewPost.php');
+        redirectTo('editPost.php?id=<?=$searchQueryParameter;?>');
     }
-    elseif(strlen($postText) > 999){
+    elseif(strlen($postText) > 9999){
         $_SESSION['errorMessage'] = "Post should be less than 1000 characters";
-        redirectTo('addNewPost.php');
+        redirectTo('editPost.php?id=<?=$searchQueryParameter;?>');
     }
     else{
         global $connectingDb;
-        //query to insert post in db
-        $sql = "INSERT INTO posts(datetime,title,category,author,image,post)";
-        $sql .= "VALUES(:DateTime,:Title,:Category,:Author,:Image,:Post)";
-
-        $stmt = $connectingDb->prepare($sql);
-        $stmt->bindValue(':DateTime',$dateTime);
-        $stmt->bindValue(':Title',$postTitle);
-        $stmt->bindValue(':Category',$category);
-        $stmt->bindValue(':Author',$admin);
-        $stmt->bindValue(':Image',$image);       
-        $stmt->bindValue(':Post',$postText);
+        //query to update post in db
+        if(!empty($image)){
+            $sql = "UPDATE posts SET title='$postTitle', category='$category', image='$image', post='$postText'
+            WHERE id='$searchQueryParameter'";
+        }  
+        else{
+            $sql = "UPDATE posts SET title='$postTitle', category='$category', post='$postText'
+            WHERE id='$searchQueryParameter'";
+        } 
         
-        $execute = $stmt->execute();
+
+        
+        $execute = $connectingDb->query($sql);
         move_uploaded_file($_FILES['image']['tmp_name'],$target);
         
         if($execute){
-            $_SESSION['successMessage'] = "Post with id : ".$connectingDb->lastInsertId()." added successfully :)";
-            redirectTo('addNewPost.php');
+            $_SESSION['successMessage'] = "Post updated successfully :)";
+            redirectTo('posts.php');
         }
         else{
             $_SESSION['errorMessage'] = "Something went wrong :( Try again ! ";
-            redirectTo('addNewPost.php');
+            redirectTo('posts.php');
         }
 
     }//end if category
@@ -146,8 +147,7 @@ if(isset($_POST['submit'])){
                 echo successMessage();
 
                 //fetching existing content
-                global $connectingDb;
-                $searchQueryParameter = $_GET['id'];
+                global $connectingDb;                                  
                 $sql = "SELECT * FROM posts WHERE id='$searchQueryParameter'";
                 $stmt = $connectingDb->query($sql);
 
@@ -160,7 +160,7 @@ if(isset($_POST['submit'])){
 
 
                 ?>
-                <form action="addNewPost.php" method="post" enctype="multipart/form-data">
+                <form action="editPost.php?id=<?=$searchQueryParameter;?>" method="post" enctype="multipart/form-data">
                         <div class="card bg-secondary text-light mb-3">
                          
                                 <div class="card-body bg-dark">
@@ -189,12 +189,12 @@ if(isset($_POST['submit'])){
                                     <div class="form-group">
                                         
                                         <span class="fieldInfo"> Exising Image: 
-                                            <img class="mb-2" src="uploads/<?=$imageToBeUpdated;?>" alt="imageToBeUpdated" width="170px" height="70px">
+                                            <img class="mb-2" src="uploads/<?=$imageToBeUpdated;?>" alt="" width="170px" height="70px">
                                         </span>
 
                                         <div class="custom-file">
                                         <input class="custom-file-input" type="File" name="image" id="imageSelect">
-                                        <label for="imageSelect" class="custom-file-label"><?=$imageToBeUpdated;?></label>
+                                        <label for="imageSelect" class="custom-file-label"></label>
                                         </div>
                                     </div>
 
@@ -206,12 +206,12 @@ if(isset($_POST['submit'])){
                                     <div class="row">
 
                                         <div class="offset-lg-8 col-lg-2 mb-2">
-                                            <a href="dashboard.php" class="btn btn-warning btn-block px-2"><i class="fas fa-angle-double-left"></i> Dashboard</a>
+                                            <a href="dashboard.php" class="btn btn-warning btn-block px-2 btn-sm"><i class="fas fa-angle-double-left"></i> Dashboard</a>
                                         </div>
 
                                         <div class="col-lg-2 mb-2">
-                                            <button type="submit" name="submit" class="btn btn-success btn-block">
-                                            <i class="fas fa-check"></i> Publish
+                                            <button type="submit" name="submit" class="btn btn-success btn-block btn-sm">
+                                            <i class="fas fa-check"></i> Confirm Edit
                                             </button>
                                         </div>
 
