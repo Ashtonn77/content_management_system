@@ -3,6 +3,17 @@
 <?php require_once("Includes/session.php");?>
 <?php
 $searchQueryParameter = $_GET['id'];
+//fetching existing content
+global $connectingDb;                                  
+$sql = "SELECT * FROM posts WHERE id='$searchQueryParameter'";
+$stmt = $connectingDb->query($sql);
+
+    while($dataRows = $stmt->fetch()){
+        $titleToBeDeleted = $dataRows['title'];
+        $categoryToBeDeleted = $dataRows['category'];
+        $imageToBeDeleted = $dataRows['image'];
+        $postToBeDeleted = $dataRows['post'];
+    }
 if(isset($_POST['submit'])){
       
         global $connectingDb;   
@@ -10,6 +21,8 @@ if(isset($_POST['submit'])){
         $execute = $connectingDb->query($sql);       
         
         if($execute){
+            $targetPathOfImageToBeDeleted = "uploads/$imageToBeDeleted";
+            unlink($targetPathOfImageToBeDeleted);
             $_SESSION['successMessage'] = "Post deleted successfully :)";
             redirectTo('posts.php');
         }
@@ -117,20 +130,20 @@ if(isset($_POST['submit'])){
                                 <div class="card-body bg-dark">
                                     <div class="form-group">
                                         <label for="title"><span class="fieldInfo">Post Title:</span></label>
-                                        <input disabled class="form-control" type="text" name="postTitle" id="title" placeholder="Type title here" value="<?=$titleToBeUpdated;?>">
+                                        <input disabled class="form-control" type="text" name="postTitle" id="title" placeholder="Type title here" value="<?=$titleToBeDeleted;?>">
                                     </div>
                                     
                                     <div class="form-group">
                                         
                                         <span class="fieldInfo"> Exising Image: 
-                                            <img class="mb-2" src="uploads/<?=$imageToBeUpdated;?>" alt="" width="170px" height="170px">
+                                            <img class="mb-2" src="uploads/<?=$imageToBeDeleted;?>" alt="" width="170px" height="170px">
                                         </span>
 
                                     </div>
 
                                     <div class="form-group">
                                         <label for="post"><span class="fieldInfo">Post:</span></label>
-                                        <textarea disabled class="form-control" name="postDescription" id="post" cols="80" rows="10"><?=$postToBeUpdated?></textarea>
+                                        <textarea disabled class="form-control" name="postDescription" id="post" cols="80" rows="10"><?=$postToBeDeleted?></textarea>
                                     </div>
 
                                     <div class="row">
