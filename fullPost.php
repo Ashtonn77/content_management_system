@@ -2,6 +2,55 @@
 <?php require_once("Includes/functions.php"); ?>
 <?php require_once("Includes/session.php"); ?>
 <?php $searchQueryParameter = $_GET['id']; ?>
+
+<?php
+if(isset($_POST['submit'])){
+    $name = $_POST['commenterName'];
+    $email = $_POST['commenterEmail'];
+    $comment = $_POST['commenterThoughts'];
+    $currentTime = time();
+    $dateTime = strftime("%Y-%m-%d %H:%M:%S", $currentTime);
+    
+    global $connectingDb;
+
+    if(empty($name) || empty($email) || empty($comment)){
+        $_SESSION['errorMessage'] = "All fields must be filled";
+        redirectTo("fullPost.php?id=$searchQueryParameter");
+    }
+    elseif(strlen($comment) > 500){
+        $_SESSION['errorMessage'] = "Comment can't exceed 500 characters";
+        redirectTo("fullPost.php?id=$searchQueryParameter");
+    }
+    else{
+        //query to insert comment in db
+        $sql = "INSERT INTO comments(datetime,name,email,comment,approvedby,status,post_id)";
+        $sql .= "VALUES(:DateTime,:Name,:Email,:Comment,'Pending','OFF',:postFromUrl)";
+
+        $stmt = $connectingDb->prepare($sql);        
+        $stmt->bindValue(':DateTime', $dateTime);
+        $stmt->bindValue(':Name', $name);
+        $stmt->bindValue(':Email', $email);
+        $stmt->bindValue(':Comment', $comment);   
+        $stmt->bindValue(':postFromUrl', $searchQueryParameter);   
+        $execute = $stmt->execute();
+
+        if($execute){
+            $_SESSION['successMessage'] = "Comment  Submitted Successfully :)";
+            redirectTo("fullPost.php?id=$searchQueryParameter");
+        }
+        else{
+            $_SESSION['errorMessage'] = "Something went wrong :( Try again ! ";
+            redirectTo("fullPost.php?id=$searchQueryParameter");
+        }
+
+    }//end if category
+
+}//end if isset
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -77,6 +126,12 @@
 
                 <h1>My very first Blogging Site</h1>
                 <h1 class="lead">An Ashton Naidoo Project</h1>
+
+                <?php
+                echo errorMessage();
+                echo successMessage();
+                ?>
+
                 <?php
                 global $connectingDb;
                 if (isset($_GET['searchBtn'])) {
