@@ -181,6 +181,34 @@ if(isset($_POST['submit'])){
                 <?php }; ?>
 
                 <!--comment section-->
+                    <!--fetching existing comment start-->
+                   <br> <span class="fieldInfo">Comments</span> <br><br>
+                    <?php
+                    global $connectingDb;
+                    $sql = "SELECT * FROM comments WHERE post_id='$searchQueryParameter' AND status='ON'";
+                    $stmt = $connectingDb->query($sql);
+                    while($dataRows = $stmt->fetch()){
+                        $commentDate = $dataRows['datetime'];
+                        $commenterName = $dataRows['name'];
+                        $commentContent = $dataRows['comment'];
+                                       
+                    ?>
+                    <div>                        
+                        <div class="media commentBlock">
+                            <img src="uploads/commenter.png" alt="" class="d-block img-fluid align" width="50px">
+                            <div class="media-body ml-2">
+                                <h6 class="lead"><?=$commenterName?></h6>
+                                <p class="small"><?=$commentDate?></p>
+                                <p><?=$commentContent?></p>
+                            </div>
+                        </div>
+                    </div>
+                        <hr>
+                <?php }; ?>
+
+
+                    <!--fetching existing comment end-->
+
                 <div class="">
                     <form action="fullPost.php?id=<?= $searchQueryParameter ?>" class="" method="post">
                         <div class="card mt-3">
