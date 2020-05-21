@@ -3,39 +3,47 @@
 <?php require_once("Includes/session.php"); ?>
 <?php
 if (isset($_POST['submit'])) {
-    $categoryTitle = $_POST['categoryTitle'];
+    $username = $_POST['username'];
+    $name = $_POST['name'];
+    $password = $_POST['password'];
+    $confirmPassword = $_POST['confirmPassword'];
     $admin = 'Ashton';
     $currentTime = time();
     $dateTime = strftime("%Y-%m-%d %H:%M:%S", $currentTime);
 
     global $connectingDb;
 
-    if (empty($categoryTitle)) {
+    if (empty($username) || empty($password) || empty($confirmPassword)) {
         $_SESSION['errorMessage'] = "All fields must be filled";
-        redirectTo('categories.php');
-    } elseif (strlen($categoryTitle) < 3) {
-        $_SESSION['errorMessage'] = "Category title should be more than 2 characters long";
-        redirectTo('categories.php');
-    } elseif (strlen($categoryTitle) > 49) {
-        $_SESSION['errorMessage'] = "Category title should be less than 50 characters";
-        redirectTo('categories.php');
+        redirectTo('admins.php');
+    } elseif (strlen($password) < 4) {
+        $_SESSION['errorMessage'] = "Your password should be more than 3 characters long";
+        redirectTo('admins.php');
+    } elseif ($password != $confirmPassword) {
+        $_SESSION['errorMessage'] = "Passwords do not match";
+        redirectTo('admins.php');
+    } elseif (checkIfUsernameExists($username)) {
+        $_SESSION['errorMessage'] = "Username taken...try another";
+        redirectTo('admins.php');
     } else {
-        //query to insert category in db
-        $sql = "INSERT INTO category(title,author,datetime)";
-        $sql .= "VALUES(:Title,:Author,:DateTime)";
+        //query to insert new admin in db
+        $sql = "INSERT INTO admins(datetime,username,password,aname,addedby)";
+        $sql .= "VALUES(:DateTime,:Username,:Password,:Aname,:AddedBy)";
 
         $stmt = $connectingDb->prepare($sql);
-        $stmt->bindValue(':Title', $categoryTitle);
-        $stmt->bindValue(':Author', $admin);
         $stmt->bindValue(':DateTime', $dateTime);
+        $stmt->bindValue(':Username', $username);
+        $stmt->bindValue(':Password', $password);
+        $stmt->bindValue(':Aname', $name);
+        $stmt->bindValue(':AddedBy', $admin);
         $execute = $stmt->execute();
 
         if ($execute) {
-            $_SESSION['successMessage'] = "Category with id : " . $connectingDb->lastInsertId() . " added successfully :)";
-            redirectTo('categories.php');
+            $_SESSION['successMessage'] = "New admin added successfully :)";
+            redirectTo('admins.php');
         } else {
             $_SESSION['errorMessage'] = "Something went wrong :( Try again ! ";
-            redirectTo('categories.php');
+            redirectTo('admins.php');
         }
     } //end if category
 
@@ -51,7 +59,7 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="CSS/style.css">
-    <title>Categories</title>
+    <title>Admin Page</title>
     <script src="https://kit.fontawesome.com/2c1c0f2ad6.js" crossorigin="anonymous"></script>
 </head>
 
@@ -114,7 +122,7 @@ if (isset($_POST['submit'])) {
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1><i class="fas fa-edit"></i> Manage Categories</h1>
+                    <h1><i class="fas fa-user"></i> Manage Admin</h1>
                 </div>
             </div>
         </div>
@@ -130,32 +138,48 @@ if (isset($_POST['submit'])) {
 
         <div class="row">
 
-            <div class="offset-lg-1 col-lg-10">
+            <div class="offset-lg-3 col-lg-6">
                 <?php
                 echo errorMessage();
                 echo successMessage();
                 ?>
-                <form action="categories.php" method="post">
+                <form action="admins.php" method="post">
                     <div class="card bg-secondary text-light mb-3">
                         <div class="card-header">
-                            <h1>Add New Category</h1>
+                            <h1>Add New Admin</h1>
                         </div>
 
                         <div class="card-body bg-dark">
                             <div class="form-group">
-                                <label for="title"><span class="fieldInfo">Category Title:</span></label>
-                                <input class="form-control" type="text" name="categoryTitle" id="title" placeholder="Type title here">
+                                <label for="username"><span class="fieldInfo">Username:</span></label>
+                                <input class="form-control" type="text" name="username" id="username">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name"><span class="fieldInfo">Name:</span></label>
+                                <input class="form-control" type="text" name="name" id="name">
+                                <small class="text-muted">*Optional</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password"><span class="fieldInfo">Password:</span></label>
+                                <input class="form-control" type="password" name="password" id="password">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirmPassword"><span class="fieldInfo">Confirm Pasword:</span></label>
+                                <input class="form-control" type="password" name="confirmPassword" id="confirmPassword">
                             </div>
 
                             <div class="row">
 
-                                <div class="offset-lg-8 col-lg-2 mb-2">
+                                <div class="offset-lg-6 col-lg-3 mb-2">
                                     <a href="dashboard.php" class="btn btn-warning btn-block px-2"><i class="fas fa-angle-double-left"></i> Dashboard</a>
                                 </div>
 
-                                <div class="col-lg-2 mb-2">
+                                <div class="col-lg-3 mb-2">
                                     <button type="submit" name="submit" class="btn btn-success btn-block">
-                                        <i class="fas fa-check"></i> Publish
+                                        <i class="fas fa-check"></i> Submit
                                     </button>
                                 </div>
 
@@ -176,14 +200,7 @@ if (isset($_POST['submit'])) {
 
     </section>
 
-
-
-
-
     <!--MAIN AREA END-->
-
-
-
 
     <!--FOOTER-->
     <footer class="bg-light text-dark">
