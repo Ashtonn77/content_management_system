@@ -11,6 +11,17 @@ if (isset($_POST['submit'])) {
         redirectTo('login.php');
     } else {
         //check if correct username and password was entered
+        $foundAccount = loginAttempt($username, $password);
+        if ($foundAccount) {
+            $_SESSION['id'] = $foundAccount['id'];
+            $_SESSION['username'] = $foundAccount['username'];
+            $_SESSION['adminName'] = $foundAccount['aname'];
+            $_SESSION['successMessage'] = 'Welcome, ' . $_SESSION['username'];
+            redirectTo('dashboard.php');
+        } else {
+            $_SESSION['errorMessage'] = 'Incorrect credentials entered';
+            redirectTo('login.php');
+        }
     }
 }
 
@@ -71,6 +82,10 @@ if (isset($_POST['submit'])) {
 
             <div class="offset-sm-3 col-sm-6" style="min-height:500px;">
                 <br><br><br>
+                <?php
+                echo errorMessage();
+                echo successMessage();
+                ?>
                 <div class="card bg-secondary text-light">
                     <div class="card-header">
                         <h4>Welcome Back</h4>

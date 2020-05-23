@@ -1,6 +1,7 @@
 <?php require_once("Includes/db.php"); ?>
 <?php require_once("Includes/functions.php"); ?>
 <?php require_once("Includes/session.php"); ?>
+<?php confirmLogin(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,7 +44,7 @@
                         <a href="categories.php" class="nav-link">Categories</a>
                     </li>
                     <li class="nav-item">
-                        <a href="manageAdmins.php" class="nav-link">Manage Admins</a>
+                        <a href="admins.php" class="nav-link">Manage admins</a>
                     </li>
                     <li class="nav-item">
                         <a href="comments.php" class="nav-link">Comments</a>
@@ -112,7 +113,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-            <?php
+                <?php
                 echo errorMessage();
                 echo successMessage();
                 ?>
@@ -139,7 +140,7 @@
                     $sql = "SELECT * FROM posts";
                     $stmt = $connectingDb->query($sql);
 
-                    while($dataRows = $stmt->fetch()){
+                    while ($dataRows = $stmt->fetch()) {
                         $id         = $dataRows['id'];
                         $dateTime   = $dataRows['datetime'];
                         $title      = $dataRows['title'];
@@ -152,48 +153,48 @@
 
                         <tbody>
                             <tr>
-                                <td class="table-secondary"><?=$num; ?></td>
-                                <td data-toggle="tooltip" title="<?=$title?>">
-                                <?php
-                                if(strlen($title) > 20){
-                                    $title = substr($title,0,18).'...';
-                                }
-                                ?>    
-                                <?=$title?></td>
-                                <td data-toggle="tooltip" title="<?=$category?>">
-                                <?php    
-                                if(strlen($category) > 8){
-                                    $category = substr($category,0,8).'..';
-                                }
-                                ?>     
-                                <?=$category?></td>
-                                <td data-toggle="tooltip" title="<?=$dateTime?>">
-                                <?php    
-                                if(strlen($dateTime) > 11){
-                                    $dateTime = substr($dateTime,0,11).'..';
-                                }
-                                ?>     
-                                <?=$dateTime?></td>
-                                <td data-toggle="tooltip" title="<?=$author?>">
-                                <?php    
-                                if(strlen($author) > 6){
-                                    $author = substr($author,0,6).'..';
-                                }
-                                ?>     
-                                <?=$author?></td>
-                                <td><img src="uploads/<?=$image;?>" width="100px"></td>
+                                <td class="table-secondary"><?= $num; ?></td>
+                                <td data-toggle="tooltip" title="<?= $title ?>">
+                                    <?php
+                                    if (strlen($title) > 20) {
+                                        $title = substr($title, 0, 18) . '...';
+                                    }
+                                    ?>
+                                    <?= $title ?></td>
+                                <td data-toggle="tooltip" title="<?= $category ?>">
+                                    <?php
+                                    if (strlen($category) > 8) {
+                                        $category = substr($category, 0, 8) . '..';
+                                    }
+                                    ?>
+                                    <?= $category ?></td>
+                                <td data-toggle="tooltip" title="<?= $dateTime ?>">
+                                    <?php
+                                    if (strlen($dateTime) > 11) {
+                                        $dateTime = substr($dateTime, 0, 11) . '..';
+                                    }
+                                    ?>
+                                    <?= $dateTime ?></td>
+                                <td data-toggle="tooltip" title="<?= $author ?>">
+                                    <?php
+                                    if (strlen($author) > 6) {
+                                        $author = substr($author, 0, 6) . '..';
+                                    }
+                                    ?>
+                                    <?= $author ?></td>
+                                <td><img src="uploads/<?= $image; ?>" width="100px"></td>
                                 <td>Comments</td>
                                 <td>
-                                   <a href="editPost.php?id=<?=$id;?>"><span class="btn btn-warning btn-sm">Edit</span></a> 
-                                   <a href="deletePost.php?id=<?=$id;?>"><span class="btn btn-danger btn-sm">Delete</span></a>
+                                    <a href="editPost.php?id=<?= $id; ?>"><span class="btn btn-warning btn-sm">Edit</span></a>
+                                    <a href="deletePost.php?id=<?= $id; ?>"><span class="btn btn-danger btn-sm">Delete</span></a>
                                 </td>
-                                <td><a href="fullPost.php?id=<?=$id;?>"><span class="btn btn-primary btn-sm">Live Preview</span></a></td>
+                                <td><a href="fullPost.php?id=<?= $id; ?>"><span class="btn btn-primary btn-sm">Live Preview</span></a></td>
                             </tr>
                         </tbody>
 
                     <?php }; ?>
                 </table>
-                                
+
             </div>
         </div>
 

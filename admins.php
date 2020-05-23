@@ -1,13 +1,14 @@
 <?php require_once("Includes/db.php"); ?>
 <?php require_once("Includes/functions.php"); ?>
 <?php require_once("Includes/session.php"); ?>
+<?php confirmLogin(); ?>
 <?php
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
     $name = $_POST['name'];
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
-    $admin = 'Ashton';
+    $admin = $_SESSION['username'];
     $currentTime = time();
     $dateTime = strftime("%Y-%m-%d %H:%M:%S", $currentTime);
 
@@ -93,7 +94,7 @@ if (isset($_POST['submit'])) {
                         <a href="categories.php" class="nav-link">Categories</a>
                     </li>
                     <li class="nav-item">
-                        <a href="manageAdmins.php" class="nav-link">Manage Admins</a>
+                        <a href="admins.php" class="nav-link">Manage admins</a>
                     </li>
                     <li class="nav-item">
                         <a href="comments.php" class="nav-link">Comments</a>
