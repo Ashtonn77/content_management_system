@@ -138,7 +138,7 @@ if (isset($_POST['submit'])) {
 
         <div class="row">
 
-            <div class="offset-lg-3 col-lg-6">
+            <div class="offset-lg-2 col-lg-8">
                 <?php
                 echo errorMessage();
                 echo successMessage();
@@ -173,11 +173,11 @@ if (isset($_POST['submit'])) {
 
                             <div class="row">
 
-                                <div class="offset-lg-6 col-lg-3 mb-2">
+                                <div class="col-lg-6 mb-2">
                                     <a href="dashboard.php" class="btn btn-warning btn-block px-2"><i class="fas fa-angle-double-left"></i> Dashboard</a>
                                 </div>
 
-                                <div class="col-lg-3 mb-2">
+                                <div class="col-lg-6 mb-2">
                                     <button type="submit" name="submit" class="btn btn-success btn-block">
                                         <i class="fas fa-check"></i> Submit
                                     </button>
