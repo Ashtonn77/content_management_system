@@ -17,7 +17,12 @@ if (isset($_POST['submit'])) {
             $_SESSION['username'] = $foundAccount['username'];
             $_SESSION['adminName'] = $foundAccount['aname'];
             $_SESSION['successMessage'] = 'Welcome, ' . $_SESSION['username'];
-            redirectTo('dashboard.php');
+
+            if (isset($_SESSION['trackingUrl'])) {
+                redirectTo($_SESSION['trackingUrl']);
+            } else {
+                redirectTo('dashboard.php');
+            }
         } else {
             $_SESSION['errorMessage'] = 'Incorrect credentials entered';
             redirectTo('login.php');

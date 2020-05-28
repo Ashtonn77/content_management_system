@@ -1,7 +1,9 @@
-<?php require_once("Includes/db.php"); ?>
+ <?php require_once("Includes/db.php"); ?>
 <?php require_once("Includes/functions.php"); ?>
 <?php require_once("Includes/session.php"); ?>
-<?php confirmLogin(); ?>
+<?php
+$_SESSION['trackingUrl'] = $_SERVER['PHP_SELF'];//return current page
+confirmLogin(); ?>
 <?php
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
