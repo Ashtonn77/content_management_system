@@ -47,3 +47,14 @@ function confirmLogin()
         redirectTo('login.php');
     }
 }
+
+
+function totalElements($name)
+{
+    global $connectingDb;
+    $sql = "SELECT COUNT(*) FROM $name";
+    $stmt = $connectingDb->query($sql);
+    $totalRows = $stmt->fetch();
+    $totalPosts = array_shift($totalRows);
+    return $totalPosts;
+}
