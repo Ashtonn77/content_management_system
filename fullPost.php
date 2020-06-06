@@ -4,48 +4,44 @@
 <?php $searchQueryParameter = $_GET['id']; ?>
 
 <?php
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
     $name = $_POST['commenterName'];
     $email = $_POST['commenterEmail'];
     $comment = $_POST['commenterThoughts'];
     $currentTime = time();
     $dateTime = strftime("%Y-%m-%d %H:%M:%S", $currentTime);
-    
+
     global $connectingDb;
 
-    if(empty($name) || empty($email) || empty($comment)){
+    if (empty($name) || empty($email) || empty($comment)) {
         $_SESSION['errorMessage'] = "All fields must be filled";
         redirectTo("fullPost.php?id=$searchQueryParameter");
-    }
-    elseif(strlen($comment) > 500){
+    } elseif (strlen($comment) > 500) {
         $_SESSION['errorMessage'] = "Comment can't exceed 500 characters";
         redirectTo("fullPost.php?id=$searchQueryParameter");
-    }
-    else{
+    } else {
         //query to insert comment in db
         $sql = "INSERT INTO comments(datetime,name,email,comment,approvedby,status,post_id)";
         $sql .= "VALUES(:DateTime,:Name,:Email,:Comment,'Pending','OFF',:postFromUrl)";
 
-        $stmt = $connectingDb->prepare($sql);        
+        $stmt = $connectingDb->prepare($sql);
         $stmt->bindValue(':DateTime', $dateTime);
         $stmt->bindValue(':Name', $name);
         $stmt->bindValue(':Email', $email);
-        $stmt->bindValue(':Comment', $comment);   
-        $stmt->bindValue(':postFromUrl', $searchQueryParameter);   
+        $stmt->bindValue(':Comment', $comment);
+        $stmt->bindValue(':postFromUrl', $searchQueryParameter);
         $execute = $stmt->execute();
 
-        if($execute){
+        if ($execute) {
             $_SESSION['successMessage'] = "Comment  Submitted Successfully :)";
             redirectTo("fullPost.php?id=$searchQueryParameter");
-        }
-        else{
+        } else {
             $_SESSION['errorMessage'] = "Something went wrong :( Try again ! ";
             redirectTo("fullPost.php?id=$searchQueryParameter");
         }
+    } //end if category
 
-    }//end if category
-
-}//end if isset
+} //end if isset
 
 ?>
 
@@ -171,8 +167,7 @@ if(isset($_POST['submit'])){
                         <img src="uploads/<?= htmlentities($image) ?>" alt="postImage" style="max-height:450px;" class="img-fluid card-img-top">
                         <div class="card-body">
                             <h4 class="card-title"><?= htmlentities($title); ?></h4>
-                            <small class="text-muted">Written by <?= htmlentities($author); ?> on <?= htmlentities($dateTime); ?></small>
-                            <span style="float:right;" class="badge">Comments 5</span>
+                            <small class="text-muted">Written by <?= htmlentities($author); ?> on <?= htmlentities($dateTime); ?> - Category: <?= htmlentities($category); ?></small>
                             <hr>
                             <p class="card-text"> <?= htmlentities($post) ?></p>
 
@@ -181,33 +176,33 @@ if(isset($_POST['submit'])){
                 <?php }; ?>
 
                 <!--comment section-->
-                    <!--fetching existing comment start-->
-                   <br> <span class="fieldInfo">Comments</span> <br><br>
-                    <?php
-                    global $connectingDb;
-                    $sql = "SELECT * FROM comments WHERE post_id='$searchQueryParameter' AND status='ON'";
-                    $stmt = $connectingDb->query($sql);
-                    while($dataRows = $stmt->fetch()){
-                        $commentDate = $dataRows['datetime'];
-                        $commenterName = $dataRows['name'];
-                        $commentContent = $dataRows['comment'];
-                                       
-                    ?>
-                    <div>                        
+                <!--fetching existing comment start-->
+                <br> <span class="fieldInfo">Comments</span> <br><br>
+                <?php
+                global $connectingDb;
+                $sql = "SELECT * FROM comments WHERE post_id='$searchQueryParameter' AND status='ON'";
+                $stmt = $connectingDb->query($sql);
+                while ($dataRows = $stmt->fetch()) {
+                    $commentDate = $dataRows['datetime'];
+                    $commenterName = $dataRows['name'];
+                    $commentContent = $dataRows['comment'];
+
+                ?>
+                    <div>
                         <div class="media commentBlock">
                             <img src="uploads/commenter.png" alt="" class="d-block img-fluid align" width="50px">
                             <div class="media-body ml-2">
-                                <h6 class="lead"><?=$commenterName?></h6>
-                                <p class="small"><?=$commentDate?></p>
-                                <p><?=$commentContent?></p>
+                                <h6 class="lead"><?= $commenterName ?></h6>
+                                <p class="small"><?= $commentDate ?></p>
+                                <p><?= $commentContent ?></p>
                             </div>
                         </div>
                     </div>
-                        <hr>
+                    <hr>
                 <?php }; ?>
 
 
-                    <!--fetching existing comment end-->
+                <!--fetching existing comment end-->
 
                 <div class="">
                     <form action="fullPost.php?id=<?= $searchQueryParameter ?>" class="" method="post">
@@ -239,13 +234,13 @@ if(isset($_POST['submit'])){
                                     </div>
 
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <textarea name="commenterThoughts" cols="8" rows="8" class="form-control"></textarea>
                                 </div>
 
                                 <div class="">
-                                    <button type="submit"  name="submit"  class="btn-secondary btn-sm">Submit Comment</button>                                    
+                                    <button type="submit" name="submit" class="btn-secondary btn-sm">Submit Comment</button>
                                 </div>
 
                             </div>
