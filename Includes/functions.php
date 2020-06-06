@@ -58,3 +58,23 @@ function totalElements($name)
     $totalPosts = array_shift($totalRows);
     return $totalPosts;
 }
+
+function approvedCommentsBadge($id)
+{
+    global $connectingDb;
+    $sqlApprove = "SELECT COUNT(*) FROM comments WHERE post_id = '$id' AND status = 'ON'";
+    $stmtApprove = $connectingDb->query($sqlApprove);
+    $rowsTotal = $stmtApprove->fetch();
+    $total = array_shift($rowsTotal);
+    return $total;
+}
+
+function disapprovedCpmmentsBadge($id)
+{
+    global $connectingDb;
+    $sqlDisapprove = "SELECT COUNT(*) FROM comments WHERE post_id = '$id' AND status = 'OFF'";
+    $stmtDisapprove = $connectingDb->query($sqlDisapprove);
+    $rowsTotal = $stmtDisapprove->fetch();
+    $total = array_shift($rowsTotal);
+    return $total;
+}

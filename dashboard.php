@@ -207,11 +207,34 @@
                                   <td><?= $dateTime; ?></td>
                                   <td><?= $author; ?></td>
                                   <td>
-                                      <span class="badge badge-success">00</span>
-                                      <span class="badge badge-danger">00</span>
+
+                                      <?php
+                                        $total = approvedCommentsBadge($id);
+                                        if ($total > 0) {
+                                        ?>
+                                          <span class="badge badge-success">
+                                              <?= $total; ?>
+                                          </span>
+                                      <?php
+                                        }
+
+                                        ?>
+
+
+                                      <?php
+                                        $total = disapprovedCpmmentsBadge($id);
+                                        if ($total > 0) {
+                                        ?>
+                                          <span class="badge badge-danger">
+                                              <?= $total; ?>
+                                          </span>
+                                      <?php
+                                        }
+
+                                        ?>
                                   </td>
                                   <td>
-                                      <span class="btn btn-info btn-sm">Preview</span>
+                                      <a href="fullPost.php?id=<?= $id; ?>"><span class="btn btn-info btn-sm">Preview</span></a>
                                   </td>
                               </tr>
                           </tbody>
