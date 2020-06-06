@@ -83,7 +83,7 @@
                 ?>
                 <?php
                 global $connectingDb;
-
+                //query when search btn is active
                 if (isset($_GET['searchBtn'])) {
                     $search = $_GET['search'];
                     $sql = "SELECT * FROM posts WHERE 
@@ -95,6 +95,18 @@
                     $stmt = $connectingDb->prepare($sql);
                     $stmt->bindValue(':search', '%' . $search . '%');
                     $stmt->execute();
+
+                    //query when pagination is active    
+                } elseif (isset($_GET['page'])) {
+                    $page = $_GET['page'];
+                    if ($page < 1) {
+                        $showPostsFrom = 0;
+                    } else {
+                        $showPostsFrom = ($page * 3) - 3;
+                    }
+
+                    $sql = "SELECT * FROM posts ORDER BY id desc LIMIT $showPostsFrom,3";
+                    $stmt = $connectingDb->query($sql);
                 } else {
                     // default sql
                     $sql = "SELECT * FROM posts ORDER BY id desc";
@@ -134,6 +146,33 @@
                         </div>
                     </div>
                 <?php }; ?>
+                <br>
+                <!--Pagination-->
+
+                <nav>
+                    <ul class="pagination pagination-md">
+
+                        <?php
+                        global $connectingDb;
+                        $sql = "SELECT COUNT(*) FROM posts";
+                        $stmt = $connectingDb->query($sql);
+                        $rowsPagination = $stmt->fetch();
+                        $totalPosts = array_shift($rowsPagination);
+                        $postPagination = ceil($totalPosts / 3);
+
+                        for ($i = 1; $i <= $postPagination; $i++) {
+
+                        ?>
+                            <li class="page-item">
+                                <a href="blog.php?page=<?= $i ?>" class="page-link"><?= $i ?></a>
+                            </li>
+                            &nbsp;
+                        <?php }; ?>
+
+                </nav>
+
+                <!--End Pagination-->
+
             </div>
             <!--MAIN AREA END-->
 
