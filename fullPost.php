@@ -55,7 +55,7 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="CSS/style.css">
-    <title>Blog</title>
+    <title>Full Post</title>
     <script src="https://kit.fontawesome.com/2c1c0f2ad6.js" crossorigin="anonymous"></script>
 </head>
 
@@ -259,12 +259,81 @@ if (isset($_POST['submit'])) {
 
 
             <!--SIDE AREA-->
-            <div class="col-4" style="min-height: 40px; background:red">
+            <div class="col-4">
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <img src="uploads/blogging.png" alt="ad" class="d-block img-fluid mb-3">
+                        <div class="text-center">
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maiores asperiores blanditiis molestias, sunt veniam minus ad repellat excepturi vero dolor consequatur corporis? Molestias accusamus quam dolorum fuga id nobis necessitatibus.Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maiores asperiores blanditiis molestias, sunt veniam minus ad repellat excepturi vero dolor consequatur corporis? Molestias accusamus quam dolorum fuga id nobis necessitatibus.
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header bg-dark text-light">
+                        <h2 class="lead">Sign In!</h2>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-success btn-block btn-sm">Join the forum</button>
+                        <button class="btn btn-info btn-block btn-sm text mb-3">Login</button>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Enter your email"> &nbsp;
+                            <button class="btn btn-sm btn-secondary">Subsribe now</button>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="card">
+                    <div class="card-header bg-primary text-light">
+                        <h2 class="lead">Categories</h2>
+                    </div>
+                    <div class="card-body">
+                        <?php
+                        global $connectingDb;
+                        $sql = "SELECT * FROM category ORDER BY id desc";
+                        $stmt = $connectingDb->query($sql);
+                        while ($dataRows = $stmt->fetch()) {
+                            $id = $dataRows['id'];
+                            $title = $dataRows['title'];
+                        ?>
+                            <a href="blog.php?category=<?= $title ?>"><span class="heading"><?= $title ?></span></a><br>
+                        <?php }; ?>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-info mb-2">
+                        <h2 class="lead">Recent posts</h2>
+                    </div>
+                    <?php
+                    global $connectingDb;
+                    $sql = "SELECT * FROM posts ORDER BY id desc LIMIT 0,5";
+                    $stmt = $connectingDb->query($sql);
+                    while ($dataRows = $stmt->fetch()) {
+                        $id = $dataRows['id'];
+                        $title = $dataRows['title'];
+                        $dateTime = $dataRows['datetime'];
+                        $image = $dataRows['image'];
+                    ?>
+                        <div class="media">
+                            <img src="uploads/<?= htmlentities($image)  ?>" width="90" height="94" alt="" class="d-block img-fluid align-self- ml-2">
+                            <div class="media-body ml-2">
+                                <a href="fullPost.php?id=<?= $id ?>" target="_blank">
+                                    <h6 class="lead"><?= htmlentities($title) ?></h6>
+                                </a>
+                                <p class="small"><?= htmlentities($dateTime) ?></p>
+                            </div>
+                        </div>
+                        <hr>
+                    <?php }; ?>
+                </div>
 
             </div>
-            <!--SIDE AREA END-->
+
 
         </div>
+        <!--SIDE AREA END-->
+
+    </div>
     </div>
 
     <!--HEADER END-->
