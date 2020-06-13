@@ -109,7 +109,7 @@
                     $stmt = $connectingDb->query($sql);
                 } else {
                     // default sql
-                    $sql = "SELECT * FROM posts ORDER BY id desc";
+                    $sql = "SELECT * FROM posts ORDER BY id desc LIMIT 0,2";
                     $stmt = $connectingDb->query($sql);
                 }
 
@@ -152,6 +152,20 @@
                 <nav>
                     <ul class="pagination pagination-md">
 
+                        <!--backward btn-->
+                        <?php
+                        if (isset($page)) {
+                            if ($page > 1) {
+                        ?>
+                                <li class="page-item">
+                                    <a href="blog.php?page=<?= $page - 1 ?>" class="page-link">&laquo;</a>
+                                </li>
+                                &nbsp;
+                        <?php
+                            };
+                        }; ?>
+                        <!--backward btn end-->
+
                         <?php
                         global $connectingDb;
                         $sql = "SELECT COUNT(*) FROM posts";
@@ -161,14 +175,40 @@
                         $postPagination = ceil($totalPosts / 3);
 
                         for ($i = 1; $i <= $postPagination; $i++) {
-
+                            if (isset($page)) {
+                                if ($i == $page) {
                         ?>
-                            <li class="page-item">
-                                <a href="blog.php?page=<?= $i ?>" class="page-link"><?= $i ?></a>
-                            </li>
-                            &nbsp;
-                        <?php }; ?>
+                                    <li class="page-item active">
+                                        <a href="blog.php?page=<?= $i ?>" class="page-link"><?= $i ?></a>
+                                    </li>
+                                    &nbsp;
+                                <?php
+                                } else {
+                                ?>
+                                    <li class="page-item">
+                                        <a href="blog.php?page=<?= $i ?>" class="page-link"><?= $i ?></a>
+                                    </li>
+                                    &nbsp;
+                                <?php  }
+                                ?>
+                        <?php }
+                        }; ?>
 
+                        <!--forward btn-->
+                        <?php
+                        if (isset($page) && !empty($page)) {
+                            if ($page + 1 <= $postPagination) {
+                        ?>
+                                <li class="page-item">
+                                    <a href="blog.php?page=<?= $page + 1 ?>" class="page-link">&raquo;</a>
+                                </li>
+                                &nbsp;
+                        <?php
+                            };
+                        }; ?>
+                        <!--forward btn end-->
+
+                    </ul>
                 </nav>
 
                 <!--End Pagination-->
