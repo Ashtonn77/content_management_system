@@ -44,7 +44,7 @@
             $execute = $connectingDb->query($sql);
             move_uploaded_file($_FILES['image']['tmp_name'], $target);
             if ($execute) {
-                $_SESSION['successMessage'] = "Post with id : " . $connectingDb->lastInsertId() . " added successfully :)";
+                $_SESSION['successMessage'] = "Profile updated successfully :)";
                 redirectTo('myProfile.php');
             } else {
                 $_SESSION['errorMessage'] = "Something went wrong :( Try again ! ";
@@ -128,7 +128,7 @@
              <div class="row">
                  <div class="col-md-12">
                      <h1><i class="fas fa-user text-success"></i> @<?= $existingUsername; ?></h1>
-                     <small><?= $existingHeadline; ?></small>
+                     <small><?= $existingHeadline ?></small>
                  </div>
              </div>
          </div>
@@ -145,7 +145,7 @@
          <div class="row">
 
              <!--left area--->
-             <div class="col md-3">
+             <div class="col-md-3">
                  <div class="card">
                      <div class="card-header bg-dark text-white text-center">
                          <h3><?= $existingName; ?></h3>

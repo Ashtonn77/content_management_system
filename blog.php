@@ -147,7 +147,7 @@
                         <img src="uploads/<?= htmlentities($image) ?>" alt="postImage" style="max-height:450px;" class="img-fluid card-img-top">
                         <div class="card-body">
                             <h4 class="card-title"><?= htmlentities($title); ?></h4>
-                            <small class="text-muted">Written by <?= htmlentities($author); ?> on <?= htmlentities($dateTime); ?> - Category: <?= htmlentities($category); ?></small>
+                            <small class="text-muted">Written by <a href="profile.php?username=<?= htmlentities($author); ?>"><?= htmlentities($author); ?></a> on <?= htmlentities($dateTime); ?> - Category: <?= htmlentities($category); ?></small>
                             <span style="float:right;" class="badge">Comments
                                 <?= approvedCommentsBadge($id); ?>
                             </span>
