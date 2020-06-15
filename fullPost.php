@@ -130,8 +130,9 @@ if (isset($_POST['submit'])) {
             <!--MAIN AREA-->
             <div class="col-8">
 
-                <h1>My very first Blogging Site</h1>
-                <h1 class="lead">An Ashton Naidoo Project</h1>
+                <h1>Read &raquo; Write &raquo; Explore</h1>
+                <h1 class="lead">Adventure awaits...</h1>
+                <hr><br>
 
                 <?php
                 echo errorMessage();
