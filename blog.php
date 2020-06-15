@@ -12,8 +12,16 @@
     <link rel="stylesheet" href="CSS/style.css">
     <title>Blog</title>
     <script src="https://kit.fontawesome.com/2c1c0f2ad6.js" crossorigin="anonymous"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
     <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        h1 {
+            font-weight: 600;
+        }
+
         .heading {
             font-family: Georgia, "Times New Roman", Times, serif;
             font-weight: bold;
@@ -88,8 +96,9 @@
             <!--MAIN AREA-->
             <div class="col-8">
 
-                <h1>My very first Blogging Site</h1>
-                <h1 class="lead">An Ashton Naidoo Project</h1>
+                <h1>Read &raquo; Write &raquo; Explore</h1>
+                <h1 class="lead">Adventure awaits...</h1>
+                <hr><br>
                 <?php
                 echo errorMessage();
                 echo successMessage();

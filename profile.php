@@ -34,6 +34,16 @@ if ($result >= 1) {
     <link rel="stylesheet" href="CSS/style.css" />
     <title>Document</title>
     <script src="https://kit.fontawesome.com/2c1c0f2ad6.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        h1 {
+            font-weight: 600;
+        }
+    </style>
 </head>
 
 <body>
